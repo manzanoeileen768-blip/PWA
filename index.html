@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mis Notas PWA</title>
+    <link rel="manifest" href="manifest.json">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 700px;
+            margin: 30px auto;
+            padding: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 10px;
+            padding: 10px;
+        }
+
+        .nota {
+            background: #f2f2f2;
+            padding: 10px;
+            margin-top: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>📝 Mis Notas</h1>
+
+<textarea id="texto" placeholder="Escribe una nota..."></textarea>
+<br>
+<button onclick="guardarNota()">Guardar nota</button>
+
+<div id="contenedor"></div>
+
+<script>
+function cargarNotas() {
+    const notas = JSON.parse(localStorage.getItem("notas")) || [];
+    const contenedor = document.getElementById("contenedor");
+
+    contenedor.innerHTML = "";
+
+    notas.forEach((nota, indice) => {
+        contenedor.innerHTML += `
+            <div class="nota">
+                ${nota}
+                <br><br>
+                <button onclick="eliminarNota(${indice})">
+                    Eliminar
+                </button>
+            </div>
+        `;
+    });
+}
+
+function guardarNota() {
+    const texto = document.getElementById("texto").value.trim();
+
+    if (texto === "") return;
+
+    const notas = JSON.parse(localStorage.getItem("notas")) || [];
+
+    notas.push(texto);
+
+    localStorage.setItem("notas", JSON.stringify(notas));
+
+    document.getElementById("texto").value = "";
+
+    cargarNotas();
+}
+
+function eliminarNota(indice) {
+    const notas = JSON.parse(localStorage.getItem("notas")) || [];
+
+    notas.splice(indice, 1);
+
+    localStorage.setItem("notas", JSON.stringify(notas));
+
+    cargarNotas();
+}
+
+cargarNotas();
+
+if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("service-worker.js");
+}
+</script>
+
+</body>
+</html>

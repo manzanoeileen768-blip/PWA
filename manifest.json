@@ -1,0 +1,8 @@
+{
+  "name": "Mis Notas",
+  "short_name": "Notas",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#4CAF50"
+}
